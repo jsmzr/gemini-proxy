@@ -60,6 +60,15 @@ export default async function handleRequest(request: NextRequest & { nextUrl?: U
   // -d '{ "prompt": { "text": "Write a story about a magic backpack"} }' \
   // "https://generativelanguage.googleapis.com/v1beta3/models/text-bison-001:generateText?key={YOUR_KEY}"
 
+  if (pathname.startsWith('/api/v3')) {
+    const url = new URL(pathname, 'https://api.binance.com')
+    searchParams.forEach((value, key) => {
+      url.searchParams.append(key, value);
+    });
+    const resp = await fetch(url, {body: request.body, method: request.method})
+    return resp
+  }
+
   const url = new URL(pathname, "https://generativelanguage.googleapis.com");
   searchParams.delete("_path");
 
